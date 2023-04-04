@@ -1,0 +1,109 @@
+命名
+系统数据固定格式（名字，年龄，性别，邮箱）
+用元组，存储空间小，访问速度快，并为每个元素命名
+
+student = ('Jim',16,'male','jim815@gmail.com')
+
+# name
+pritnt student[0]
+# age
+if student[1] >=15:
+  ...
+# sex
+if student[2] == 'male':
+  ...
+
+# 索引对程序的维护无可读性
+
+# C语言中可以用宏定义
+# define NAME 0
+# define AGE 1
+# define SEX 2
+enum Student{NAME,AGE,SEX}# 声明枚举类型对象
+
+# python中
+1.类似宏定义,设置常量值代替索引
+NAME = 0
+AGE = 1
+SEX = 2
+EMAIL = 3
+NAME,AGE,SEX,EMAIL = xrange(4)
+# name
+pritnt student[NAME]
+# age
+if student[AGE] >=15:
+  ...
+# sex
+if student[SEX] == 'male':
+  ...
+
+2.使用标准库中collections.namedtuple替代内置tuple
+from collections import namedtuple
+Student = namedtuple('Student',['name','age','sex','email'])# 参数(子类名字，索引别名列表)
+s = Student('Jim',16,'male','jim815@gmail.com')# 位置传参
+# Student(name='Jim',age=16,sex='male',email='jim815@gmail.com')
+s2 = Student(name='Jim',age=16,sex='male',email='jim815@gmail.com') #关键字传参
+s.name # 'Jim'
+s.age # 16
+s.sex # 'male'
+isinstance(s,tuple)# True---内置类型的子类
+
+统计
+序列中元素的出现频度
+1.某随机序列中，找到出现次数最高的3个元素和出现次数
+2.某文章中的单词，出现次数最高的10个单词和出现次数
+
+1.
+普遍迭代统计
+from random import randint
+data = [randint(0,20) for _ in xrange(30)]
+# 目标结果类似res = {2:5,6:8,8:7}
+res = dict.fromkeys(data,0)#初始字典，将data中的值作为key，字典key不重复，0作为初始value
+for x in data:
+  res[x] +=1
+res = dict(sorted(res.items(),key=lambda x: x[1],reverse=True))
+# iterable:代表的是可迭代的对象。
+# key：传入函数，用来进行比较的元素。具体的值来源于可迭代的对象中。
+# res.items()返回的列表中的每一个元素，作为匿名函数(lambda)的参数，x[0]即用“键”排序，x[1]即用“值”排序；返回结果为新的列表，可以通过dict()函数转为字典格式。
+# l1=[(1,'a'),(2,'b'),
+    (3,'c'),(4,'d')]
+  d1=dict(l1)
+  print (d1)
+  Output:{1: 'a', 2: 'b', 3: 'c', 4: 'd'}
+# reverse：排序规则，reverse=False升序(默认)，reverse=True降序。
+
+使用collections.Counter对象
+将序列传入Counter的构造器，得到Counter对象是元素频度的字典
+Counter.most_common(n)方法得到频度最高的n个元素的列表
+from collections import Counter
+c2 = Counter(data)
+c2[10]# data中10出现的频度数
+c2.most_common(3)# [(11,5),(4,4),(20,4)],11,4,20是出现频度最高的3个
+
+2.
+Linux:ed CodingStyle# Linux kernel编码规范文本文件
+import re
+txt = open('CondingStyle').read()
+c = re.split('\W+',txt)# 用非字母做分割，得到文本单词列表
+c3 = Counter(c)# c3每个词出现频度数的字典
+c3.most_common(10)
+
+排序
+根据字典值进行排序
+排序算法--内置函数sorted，底层使用C进行计算，速度快
+from random import randint
+d = {x: randint(60,100) for x in 'xyzabc'}
+# {'a':97,'b':69,'c':78,'x':66,'y':95,'z':72}
+(97,'a')>(69,'b') # True
+(97,'a')>(97,'b') # False
+
+1.利用zip将字典数据转换元组处理
+d.keys()
+d.values()
+zip(d.values(),d.keys())
+python2,内存上，d.keys(),d.values()都是得到列表,zip使用d的迭代
+sorted(zip(d.itervalues(),d.iterkyes()))
+
+2.传递sorted函数的key参处理
+d.items()# [('a',85),('c',94),('d',88)...]
+sorted(d.items(),key=lambda x: x[1])
