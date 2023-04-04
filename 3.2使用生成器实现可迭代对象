@@ -1,0 +1,80 @@
+#
+生成器函数:包含yield语句的函数
+调用时，不会直接执行函数体内部的语句，而是返回一个生成器对象/可迭代对象
+
+def f():
+  print 'in f(), 1'
+  yield 1
+  
+  print 'in f(), 2'
+  yield 2
+  
+  print 'in f(), 3'
+  yield 3
+g = f()
+# 生成器对象和迭代器对象都支持迭代器接口 .next()
+print g.next()
+in f(), 1
+1
+# 生成器对象也是一个可迭代对象
+for x in g:
+  print x
+
+g.__iter__() is g # True
+
+#
+实现一个可迭代对象的类，能迭代出给定范围所有素数：
+
+pn = PrimeNumbers(1,30)
+for k in pn:
+  print k
+输出结果：
+2 3 5 7 11 13 17 19 23 29
+
+# 将该类的__iter__方法实现成生成器函数，每次yield返回一个素数
+#
+class PrimeNumbers:
+  def __init__(self,start,end):
+    self.start = start
+    self.end = end
+  def isPrimeNum(self,k):
+    if k<2:
+      return False
+    for i in xrange(2,k):
+      if k%i == 0：
+        return False
+    return True
+  # 可迭代接口
+  def __iter__(self):
+    for k in xrange(self.start,self.end+1):
+      if self.isPrimeNum(k):
+        yield k
+        
+for x in PrimeNumbers(1,100):
+  print x
+
+# 为什么用这个生成器，是因为如果用List的话，会占用更大的空间，比如说取0,1,2,3,4,5,6............1000
+可能会：
+for n in range(1000):
+    a=n
+这个时候range(1000)就默认生成一个含有1000个数的list了，所以很占内存。
+这个时候可以用刚才的yield组合成生成器进行实现，也可以用xrange(1000)这个生成器实现py2.x
+yield组合：
+
+def foo(num):
+    print("starting...")
+    while num<10:
+        num=num+1
+        yield num
+for n in foo(0):
+    print(n)
+
+xrange(1000):
+
+for n in xrange(1000):
+    a=n
+
+其中要注意的是python3时已经没有xrange()了，在python3中，range()就是xrange()了，你可以在python3中查看range()的类型，它已经是个<class 'range'>了，而不是一个list了
+
+
+
