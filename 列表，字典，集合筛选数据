@@ -1,0 +1,48 @@
+取非负数
+
+1.普通迭代每一项
+data = [1,5,-3,-2,6,0,9]
+res = []
+for x in data:
+  if x >= 0:
+  res.append(x)
+print res
+
+2.python中其他做法
+列表：
+  filter函数：filter(lambda x:x>=0,data)
+  列表解析：[x for x in data if x>=0]
+字典：
+  字典解析：{k:v for k,v in d.iteritems() if v>= 0}
+集合：
+  集合解析：{x for x in data if x>=0}
+
+2.1列表
+from random import randint
+
+data = [randint(-10,10) for _ in xrange(10)]
+# python2.x --> xrange()
+# python3.x --> range()
+# data = [2,2,-3,-5,6,3,7,8,7,5]
+
+# filter方式
+res = filter(lambda x: x>=0,data)
+
+# 列表解析
+res = [for x in data if x>=0]
+
+timeit filter(lambda x: x>=0,data) # 909ns
+timeit [for x in data if x>=0] # 455ns
+# 列表解析方式更快，首选---这俩都远快于普通迭代
+
+2.2字典
+data = {x:randint(-10,10) for x in xrange(1,21)}
+# data = {1:-5,2:3,...}
+
+res = {k:v for k,v in data.iteritems() if v >=0}
+
+2.3集合
+data = [2,2,-3,-5,9,6,7,5,8,7]
+d = set(data)# {-5,-3,2,5,6,7,8,9}
+res = {x for x in d if x>=0}
+
