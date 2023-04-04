@@ -1,0 +1,42 @@
+d = {}
+d['Jim'] = (1,35)
+d['Leo'] = (2,37)
+d['Bob'] = (3,40)
+for k in d: print k
+Bob
+Jim
+Leo
+# 内置dict进入顺序无定义
+
+使用collections.OrderedDict
+以OrderedDict代替内置字典Dict，依次将数据写入
+from collections import OrderedDict
+d = OrderedDict()
+d['Jim'] = (1,35)
+d['Leo'] = (2,37)
+d['Bob'] = (3,40)
+for k in d: print k
+Jim
+Leo
+Bob
+
+#
+from time import time
+from random import randint
+from collections import OrderedDict
+
+d = OrderedDict()
+players = list('ABCDEFGH')
+start = time()
+
+for i in xrange(8):
+  raw_input()# 等待用户输入,模拟每位选手答题完毕
+  p = players.pop(randint(0,7 - i))# 随机选手答题完毕
+  end = time()
+  print i+1 , p, end - start
+  d[p] = (i+1,end-start)
+
+print
+print '-'*20
+for k in d:
+  print k,d[k]
