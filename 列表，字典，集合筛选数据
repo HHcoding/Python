@@ -45,4 +45,3 @@ res = {k:v for k,v in data.iteritems() if v >=0}
 data = [2,2,-3,-5,9,6,7,5,8,7]
 d = set(data)# {-5,-3,2,5,6,7,8,9}
 res = {x for x in d if x>=0}
-
