@@ -11,7 +11,7 @@ b.__
 b.__getitem__# sequence序列的接口
 
 t = iter(a) # 迭代器对象
-t.next()
+t.next()# 可迭代接口
 1
 t.next()
 2
