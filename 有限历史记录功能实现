@@ -1,0 +1,40 @@
+使用容量为n的队列存储历史记录
+使用标准库collections中的deque，一个双端循环队列
+程序退出前，可以使用pickle将队列对象存入文件，再次运行程序时将其倒入
+
+from collections import deque
+q = deque([],5)#参数：队列初始值，容量
+q.append(1)# 每次右入队
+q.append(2)
+q.append(3)
+q.append(4)
+q.append(5)# [1,2,3,4,5]
+q.append(6)# [2,3,4,5,6]
+
+
+#
+from random import randint
+from collections import deque
+
+N = randint(0,100)
+history = deque([],5)
+
+def guess(k):
+  if k==N:
+    print 'right'
+    return True
+  if k<N:
+    print '%s is less-than N' % k
+  else:
+    print '%s is greater-than N' % k
+  return False
+
+while True:
+  line = raw_input("please input a number:")
+  if line.isdigit():# 方法检测字符串是否只由数字组成，只对 0 和 正数有效
+     k = int(line)
+     history.append(k)
+     if guess(k):
+        break
+  elif line == 'history' or line == 'h?':
+    print list(history)
